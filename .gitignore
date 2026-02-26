@@ -1,0 +1,32 @@
+# Ephemeral session data
+history.jsonl
+debug/
+file-history/
+shell-snapshots/
+tasks/
+todos/
+telemetry/
+backups/
+cache/
+plans/
+downloads/
+
+# Machine-specific workspace references
+projects/
+
+# Plugin runtime cache (absolute paths, reinstalled per machine)
+plugins/cache/
+plugins/marketplaces/
+plugins/temp_git_*/
+plugins/install-counts-cache.json
+plugins/installed_plugins.json
+
+# IDE integration (lock files, session state)
+ide/
+
+# Machine-local settings overrides (credentials, not tracked — see settings.local.json.example)
+settings.local.json
+
+# Backup artifacts
+*.backup*
+CLAUDE.md.backup*

@@ -1,0 +1,19 @@
+{
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "C:\\Users\\cdprice\\.claude\\plugins\\marketplaces\\claude-plugins-official",
+    "lastUpdated": "2026-02-26T15:54:45.386Z"
+  },
+  "ErosMarketplace": {
+    "source": {
+      "source": "directory",
+      "path": "C:\\Users\\cdprice\\.claude\\plugins\\marketplaces\\eros"
+    },
+    "installLocation": "C:\\Users\\cdprice\\.claude\\plugins\\marketplaces\\eros",
+    "lastUpdated": "2026-02-18T19:21:14.849Z",
+    "autoUpdate": true
+  }
+}
