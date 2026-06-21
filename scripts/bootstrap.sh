@@ -28,6 +28,7 @@ command -v localdata-mcp >/dev/null 2>&1 || \
 
 PLUGINS=(
     "commit-commands@claude-plugins-official"
+    "github@claude-plugins-official"
     "skill-creator@claude-plugins-official"
 )
 

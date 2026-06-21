@@ -1,71 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "alwaysThinkingEnabled": true,
+  "cleanupPeriodDays": 20,
   "attribution": {
     "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
     "pr": "Co-Authored-By: Claude <noreply@anthropic.com>"
   },
-  "autoUpdatesChannel": "latest",
-  "cleanupPeriodDays": 20,
-  "enableAllProjectMcpServers": true,
-  "enabledPlugins": {
-    "commit-commands@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/scripts/format-on-edit.sh",
-            "statusMessage": "Formatting...",
-            "type": "command"
-          },
-          {
-            "command": "bash ~/.claude/scripts/clippy-on-edit.sh",
-            "statusMessage": "Checking...",
-            "type": "command"
-          }
-        ],
-        "matcher": "Write|Edit"
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/scripts/session-start.sh",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.claude/scripts/bootstrap.sh",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
   "includeCoAuthoredBy": true,
-  "mcpServers": {
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-      "type": "stdio",
-      "env": {
-        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
-      }
-    },
-    "localdata": {
-      "command": "localdata-mcp",
-      "type": "stdio"
-    }
-  },
-  "model": "us.anthropic.claude-sonnet-4-6",
   "permissions": {
     "allow": [
       "Bash(* --help *)",
@@ -333,24 +273,6 @@
       "mcp__mcp-obsidian__*",
       "mcp__plugin_github_github__*"
     ],
-    "ask": [
-      "Bash(env * *)",
-      "Bash(find * -delete)",
-      "Bash(find * -exec *)",
-      "Bash(find * -execdir *)",
-      "Bash(find * -ok *)",
-      "Bash(find * -okdir *)",
-      "Bash(nice *)",
-      "Bash(nohup *)",
-      "Bash(parallel *)",
-      "Bash(timeout * *)",
-      "Bash(watch *)",
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(.envrc)",
-      "Read(./config/credentials.json)",
-      "Read(./secrets/**)"
-    ],
     "deny": [
       "Bash(dd if=/dev/random of=/dev/*)",
       "Bash(dd if=/dev/zero of=/dev/*)",
@@ -381,18 +303,99 @@
       "Bash(sudo shutdown*)",
       "Bash(sudo su -*)",
       "Bash(sudo su*)"
+    ],
+    "ask": [
+      "Bash(env * *)",
+      "Bash(find * -delete)",
+      "Bash(find * -exec *)",
+      "Bash(find * -execdir *)",
+      "Bash(find * -ok *)",
+      "Bash(find * -okdir *)",
+      "Bash(nice *)",
+      "Bash(nohup *)",
+      "Bash(parallel *)",
+      "Bash(timeout * *)",
+      "Bash(watch *)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(.envrc)",
+      "Read(./config/credentials.json)",
+      "Read(./secrets/**)"
     ]
   },
-  "showThinkingSummaries": true,
-  "spinnerTipsEnabled": false,
-  "statusLine": {
-    "command": "bash ~/.claude/scripts/statusline.sh",
-    "type": "command"
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/format-on-edit.sh",
+            "statusMessage": "Formatting..."
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/clippy-on-edit.sh",
+            "statusMessage": "Checking..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/session-start.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/bootstrap.sh",
+            "async": true
+          }
+        ]
+      }
+    ]
   },
-  "theme": "dark-ansi",
-  "verbose": true,
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/scripts/statusline.sh"
+  },
+  "enabledPlugins": {
+    "github@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
+  },
+  "spinnerTipsEnabled": false,
+  "alwaysThinkingEnabled": true,
+  "autoUpdatesChannel": "latest",
   "voice": {
     "mode": "tap"
   },
-  "voiceEnabled": true
+  "showThinkingSummaries": true,
+  "theme": "dark-ansi",
+  "verbose": true,
+  "voiceEnabled": true,
+  "mcpServers": {
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "type": "stdio",
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    },
+    "localdata": {
+      "command": "localdata-mcp",
+      "type": "stdio"
+    }
+  }
 }
