@@ -1,0 +1,37 @@
+# Deny everything by default — only explicitly listed files are tracked
+*
+
+# Core config files
+!.gitattributes
+!.gitignore
+!.markdownlint.yaml
+!.pre-commit-config.yaml
+!CLAUDE.md
+!PROJECT_TEMPLATE.md
+!README.md
+!settings.json
+
+# CI
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
+
+# Scripts
+!scripts/
+scripts/*
+!scripts/*.sh
+
+# User-level skills — allow the full tree so a skill can carry
+# references/, scripts/, or assets/ alongside its SKILL.md
+!skills/
+!skills/**
+
+# User-level subagents
+!agents/
+agents/*
+!agents/*.md
+
+# User-level slash commands
+!commands/
+commands/*
+!commands/*.md

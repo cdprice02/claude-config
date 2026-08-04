@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-json
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # shellcheck and markdownlint run via `language: system`, resolving to
+  # whatever's on PATH (e.g. via `nix shell nixpkgs#shellcheck
+  # nixpkgs#markdownlint-cli`) rather than pre-commit managing its own copy —
+  # matches the CI workflow's tool versions and nix-config's own pattern for
+  # the same reason: one source of truth instead of three.
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: system
+        files: ^scripts/.*\.sh$
+      - id: markdownlint
+        name: markdownlint
+        entry: markdownlint
+        language: system
+        types: [markdown]

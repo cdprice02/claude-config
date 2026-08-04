@@ -1,0 +1,55 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: shellcheck scripts/*.sh
+
+  settings-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: pip install --quiet check-jsonschema
+      - run: |
+          curl -sfL https://json.schemastore.org/claude-code-settings.json -o /tmp/schema.json
+          check-jsonschema --schemafile /tmp/schema.json settings.json
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm install -g markdownlint-cli
+      - run: git ls-files -z '*.md' | xargs -0 markdownlint --config .markdownlint.yaml
+
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: reviewdog/action-actionlint@v1
+        with:
+          fail_level: error
