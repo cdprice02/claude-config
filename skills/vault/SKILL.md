@@ -127,6 +127,22 @@ are referenced as markdown links, not wikilinks:
 `[[something.pdf]]`; nothing will resolve. Reachable everywhere via the Drive
 connector.
 
+**Personal Google Docs belong in the vault too**, not just reusable
+technical/project knowledge. The vault is meant to be a first-class,
+queryable record of the user's own history: letters, resumes, application
+essays, hobby guides, and one-off correspondence all migrate. Lack of
+*current* utility is not a reason to exclude something; it may matter for a
+future connection. The only real exclusions are genuinely unmigratable
+documents: content not owned by the user (a doc that lives in someone
+else's Google account, merely shared), or a format that would degrade as
+markdown (encoded/binary blobs, spreadsheets). Checked 2026-08-05: the Drive
+Google Docs corpus (42 files) was inventoried against this rule; 37 migrated
+into new `projects/personal/{project}/context/` folders (college-applications,
+career, speedcubing, early-programming, dnd-characters, correspondence,
+travel), 2 were dropped entirely at the user's request (encoded game-save
+blobs with no readable content), and 3 stayed in Drive as not owned by the
+user. Judge a new document against the rule above when it comes up.
+
 ## Capture workflow
 
 1. Decide the type: reusable, project-specific, or a daily insight
@@ -147,11 +163,15 @@ the originating daily note, then remove the `#insight` tag.
 
 ## Write scope
 
-Read anywhere. Write only to `journal/`, `knowledge/`, `projects/`, `people/`.
-
-**Never write to** `templates/`, `docs/`, `Home.md`, `Dashboard*.md`, MOC files,
-or `.obsidian/`. Those are hand-maintained navigation and scaffolding; propose
-changes rather than making them.
+Read and write anywhere in the vault, including `templates/`, `docs/`,
+`Home.md`, `Dashboard*.md`, MOC files, and `.obsidian/`. Project MOCs follow
+the `templates/Project MOC.md` pattern (see an existing one, e.g.
+`projects/personal/isotope/MOC - Isotope.md`, before writing a new one).
+`Home.md`, `Dashboard*.md`, and the top-level aggregator MOCs
+(`MOC - All Projects.md`, `MOC - Currently Active.md`) are Dataview-driven
+and hand-tuned; take more care there; a bad edit breaks the query for the
+whole vault. `.obsidian/` holds Obsidian's own app/plugin config, not vault
+content, edit only when a task specifically calls for it.
 
 ## Pitfalls
 

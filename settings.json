@@ -302,20 +302,7 @@
       "Bash(sudo rm /usr/*)",
       "Bash(sudo shutdown*)",
       "Bash(sudo su -*)",
-      "Bash(sudo su*)",
-      "Edit(~/repos/obsidian/.obsidian/**)",
-      "Edit(~/repos/obsidian/docs/**)",
-      "Edit(~/repos/obsidian/templates/**)",
-      "Edit(~/repos/obsidian/Home.md)",
-      "Edit(~/repos/obsidian/Dashboard*.md)",
-      "Edit(~/repos/obsidian/**/MOC - *.md)",
-      "Read(~/repos/obsidian/.obsidian/**)",
-      "Write(~/repos/obsidian/.obsidian/**)",
-      "Write(~/repos/obsidian/docs/**)",
-      "Write(~/repos/obsidian/templates/**)",
-      "Write(~/repos/obsidian/Home.md)",
-      "Write(~/repos/obsidian/Dashboard*.md)",
-      "Write(~/repos/obsidian/**/MOC - *.md)"
+      "Bash(sudo su*)"
     ],
     "ask": [
       "Bash(env * *)",
