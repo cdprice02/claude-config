@@ -323,9 +323,12 @@
     ],
     "additionalDirectories": [
       "~/repos/obsidian"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "model": "opusplan",
+  "fallbackModel": ["sonnet", "haiku"],
+  "autoCompactWindow": 500000,
   "hooks": {
     "PostToolUse": [
       {
