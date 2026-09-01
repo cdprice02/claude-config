@@ -246,7 +246,6 @@
       "Read(~/.bashrc)",
       "Read(~/.claude/**)",
       "Read(~/.zshrc)",
-      "Skill(commit-commands:*)",
       "WebFetch(domain:api.anthropic.com)",
       "WebFetch(domain:api.openai.com)",
       "WebFetch(domain:arxiv.org)",
@@ -322,7 +321,8 @@
       "Read(./secrets/**)"
     ],
     "additionalDirectories": [
-      "~/repos/obsidian"
+      "~/repos/obsidian",
+      "~/.nix-atelier"
     ],
     "defaultMode": "default"
   },
@@ -364,15 +364,6 @@
             "command": "bash ~/.claude/scripts/session-start.sh"
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/scripts/bootstrap.sh",
-            "async": true
-          }
-        ]
       }
     ],
     "PreCompact": [
@@ -386,14 +377,30 @@
       }
     ]
   },
+  "sandbox": {
+    "enabled": true,
+    "allowUnsandboxedCommands": true,
+    "network": {
+      "allowUnixSockets": ["/nix/var/nix/daemon-socket/socket"]
+    },
+    "filesystem": {
+      "allowWrite": ["~/Library/Caches/treefmt"]
+    },
+    "credentials": {
+      "files": [
+        { "path": "~/.ssh", "mode": "deny" },
+        { "path": "~/.aws/credentials", "mode": "deny" },
+        { "path": "~/.config/secrets", "mode": "deny" }
+      ]
+    }
+  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "commit-commands@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
   "spinnerTipsEnabled": false,

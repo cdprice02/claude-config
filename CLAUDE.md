@@ -23,6 +23,11 @@ use subscription auth, work profiles use AWS Bedrock.
 **On Bedrock profiles, `WebSearch` is unavailable.** Use Context7 for library
 docs and `WebFetch` against allowlisted domains instead.
 
+## Toolchain
+
+Before running a project's build, test, lint, or watch command, call the Skill
+tool with "toolchain". A repo's own `docs/agents/toolchain.md` overrides it.
+
 ## Verification
 
 For anything with runtime behavior (pipelines, notebooks, CLI output), actually

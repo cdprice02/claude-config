@@ -27,13 +27,33 @@ new file is ignored unless deliberately permitted.
 
 Loaded on demand: only the one-line description enters context until invoked.
 
-| Skill | Covers |
-|---|---|
-| `vault` | The Obsidian vault at `$OBSIDIAN_VAULT`: layout, search, capture conventions, frontmatter and tags, write scope |
-| `pr-workflow` | Issue → worktree → PR → merge, including multi-PR programs |
+Most skills come from `config/skills`, a sibling submodule this repo's
+`skills/` symlinks into: a personal fork of
+[mattpocock/skills](https://github.com/mattpocock/skills), a fourth submodule
+alongside `claude/` (this repo), `copilot/`, and `git/gitalias/` in the parent
+nix-config repo. They're linked in as plain user skills, not a plugin, via
+relative symlinks that `just link-skills` (in nix-config's `justfile`)
+generates for every `SKILL.md` under `config/skills/skills/{engineering,
+productivity, atelier}/`, e.g. `skills/tdd -> ../../skills/skills/engineering/tdd`.
+Linking them as bare names matters: the fork's own skills call each other by
+bare name internally (`/tdd`, not `/mattpocock-skills:tdd`), and a plugin
+namespace would break those references.
 
-The `nix-config` skill lives in that repo's own `.claude/skills/`; it describes
-one repo, so it loads only inside it, not in every session everywhere.
+To update: `git -C config/skills fetch upstream && git merge upstream/main`,
+then re-run `just link-skills` from nix-config to pick up any new, renamed, or
+removed skills.
+
+The fork carries one local-only addition upstream doesn't have: an `atelier/`
+bucket, currently just `toolchain` (a build/test/lint command lookup table for
+Rust/Python/Node). It's a separate bucket rather than folded into
+`engineering/` because upstream's contribution rules require anything under
+`engineering/`/`productivity/` to also get entries in several other files
+upstream itself edits on nearly every release; a bucket upstream has never
+heard of sidesteps that merge-conflict surface entirely.
+
+`vault` remains a real, non-forked skill living directly in this repo,
+untouched by any of the above. `pr-workflow` is gone: fully superseded by the
+fork's `to-tickets`, `implement`, and `code-review`.
 
 ## MCP servers
 
@@ -47,7 +67,12 @@ one repo, so it loads only inside it, not in every session everywhere.
   entries) cannot reference an env var; Claude Code's permission syntax has
   no interpolation, so they hardcode the `~/repos/obsidian` convention
   directly. If the vault ever lives somewhere else, those entries need a
-  manual update and will not follow `$OBSIDIAN_VAULT`.
+  manual update and will not follow `$OBSIDIAN_VAULT`. An earlier
+  `mcp-obsidian` server did this same job over MCP and was retired once the
+  filesystem approach proved equivalent at zero token cost. A second server,
+  `localdata-mcp`, was removed outright for an unrelated reason: it sat in
+  `settings.json` for months referencing a binary that was never actually
+  installed.
 - **Account-level claude.ai connectors** (Context7, Drive, Gmail, Calendar) do
   surface inside Claude Code, but only on the personal profile. **Bedrock auth
   has no claude.ai session, so work machines get none of them, and no
@@ -60,12 +85,11 @@ one repo, so it loads only inside it, not in every session everywhere.
 
 | Plugin | Purpose |
 |---|---|
-| `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` |
 | `skill-creator` | Create and iterate on skills |
-| `claude-md-management` | Audit CLAUDE.md quality, capture session learnings |
+| `rust-analyzer-lsp` | Rust language server integration |
 
-`scripts/bootstrap.sh` installs these on first session start. It registers **no**
-MCP servers.
+Plugins are enabled directly in `settings.json`'s `enabledPlugins`; nothing
+installs them at session start any more (see Hooks).
 
 ## Hooks
 
@@ -73,9 +97,14 @@ MCP servers.
 |---|---|---|
 | SessionStart | `profile-check.sh` | Asserts profile, branch and auth mode agree. Silent when coherent, loud on mismatch. Runs first. |
 | SessionStart | `session-start.sh` | Banner: path, branch, dirty count, profile |
-| SessionStart | `bootstrap.sh` | Async; installs missing plugins |
 | PostToolUse | `format-on-edit.sh` | `ruff` / `rustfmt` / JuliaFormatter by extension |
 | PostToolUse | `clippy-on-edit.sh` | `cargo clippy` for `.rs` |
+
+There used to be a third SessionStart hook, `bootstrap.sh`, that installed any
+plugin missing from `PLUGINS` on a fresh machine. It was removed: the premise
+was disproved on this very machine, where `rust-analyzer-lsp` was enabled and
+working without ever being listed in the script. Plugins now install through
+`enabledPlugins` alone, no bootstrap step required.
 
 `statusline.sh` is the status line: reads `COLUMNS` for width and counts
 characters rather than bytes (the bars are multi-byte UTF-8).
