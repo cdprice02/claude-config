@@ -377,23 +377,6 @@
       }
     ]
   },
-  "sandbox": {
-    "enabled": true,
-    "allowUnsandboxedCommands": true,
-    "network": {
-      "allowUnixSockets": ["/nix/var/nix/daemon-socket/socket"]
-    },
-    "filesystem": {
-      "allowWrite": ["~/Library/Caches/treefmt"]
-    },
-    "credentials": {
-      "files": [
-        { "path": "~/.ssh", "mode": "deny" },
-        { "path": "~/.aws/credentials", "mode": "deny" },
-        { "path": "~/.config/secrets", "mode": "deny" }
-      ]
-    }
-  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/scripts/statusline.sh"
