@@ -1,8 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "cleanupPeriodDays": 20,
+  "cleanupPeriodDays": 90,
   "env": {
-    "OBSIDIAN_VAULT": "$HOME/repos/obsidian"
+    "OBSIDIAN_VAULT": "$HOME/repos/obsidian",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "attribution": {
     "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
@@ -329,11 +330,6 @@
             "type": "command",
             "command": "bash ~/.claude/scripts/format-on-edit.sh",
             "statusMessage": "Formatting..."
-          },
-          {
-            "type": "command",
-            "command": "bash ~/.claude/scripts/clippy-on-edit.sh",
-            "statusMessage": "Checking..."
           }
         ]
       }
@@ -356,16 +352,6 @@
           }
         ]
       }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/scripts/precompact-backup.sh"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
@@ -373,7 +359,7 @@
     "command": "bash ~/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -387,7 +373,7 @@
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "autoCompactWindow": 500000,
+  "autoCompactWindow": 250000,
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {

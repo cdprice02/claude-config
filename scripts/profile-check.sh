@@ -23,8 +23,13 @@ git -C "$CFG_DIR" rev-parse --git-dir >/dev/null 2>&1 || exit 0
 
 BRANCH=$(git -C "$CFG_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "?")
 
-warn() { printf '\033[1;31m⚠ profile-check: %s\033[0m\n' "$1" >&2; }
-note() { printf '\033[2m  %s\033[0m\n' "$1" >&2; }
+# SessionStart stderr on exit 0 goes only to the debug log, so findings are
+# collected and emitted as a JSON systemMessage, which the user does see.
+msg=""
+warn() { msg="${msg}⚠ profile-check: $1
+"; }
+note() { msg="${msg}  $1
+"; }
 
 # --- branch vs profile ------------------------------------------------------
 case "$PROFILE:$BRANCH" in
@@ -73,4 +78,7 @@ if [ "$BRANCH" = "work" ]; then
     fi
 fi
 
+if [ -n "$msg" ] && command -v jq >/dev/null 2>&1; then
+    jq -n --arg m "${msg%?}" '{systemMessage: $m}'
+fi
 exit 0

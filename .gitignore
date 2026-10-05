@@ -35,3 +35,6 @@ agents/*
 !commands/
 commands/*
 !commands/*.md
+
+# Skills synced down from claude.ai (syncClaudeAiSkills); per-account, not shared
+skills/synced/

@@ -34,6 +34,37 @@ For anything with runtime behavior (pipelines, notebooks, CLI output), actually
 run it: tests verify code correctness, not feature correctness. Say so
 explicitly if verification isn't possible in this environment.
 
+- **Read exit codes directly.** A pipe (`| tail`, `| grep`) reports the last
+  command's status, so judge pass/fail from an unpiped run or under
+  `set -o pipefail`.
+- **Refactors carry an equivalence oracle.** Before a behavior-preserving
+  change, capture an observable that must not move (test output, a
+  deterministic benchmark counter, generated artifacts) and compare after
+  each step, not only at the end. Inverted branches, early returns, and
+  over-broad guards are the usual casualties of merging functions.
+- **Measurements run in the main session.** Before a benchmark, check for
+  stray CPU-heavy processes and sandbox limits on core detection. Show raw
+  numbers, not a summary, and rerun any figure taken under contention.
+- **Before pushing**, run the checks CI will run; the toolchain skill lists
+  them per stack.
+
+## Long-running jobs
+
+Before launching a job that may outlive the session (a benchmark suite,
+mutation testing, a long CI run), record resume state somewhere durable: the
+issue, the PR, or a file. Include the exact command, the commit SHAs, and the
+output path, so a fresh session can pick up the analysis. Launch it as a
+tracked background task.
+
+## Grounding
+
+- `git fetch` before reasoning about branches, PRs, or issues; trust live
+  `gh` state over the local checkout.
+- Read a repo's ADRs (`docs/adr/`) and style or voice docs before
+  recommending a direction or writing prose for it.
+- When a brief's premise is ambiguous (a creative request, an unfamiliar
+  domain), state your reading in one line before building on it.
+
 ## Knowledge base
 
 An Obsidian vault at `$OBSIDIAN_VAULT` holds project context, past decisions,

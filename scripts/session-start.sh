@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-# SessionStart: banner + context detection + Obsidian reminder
-# Bootstrap (MCPs, plugins) runs separately via async SessionStart hook in settings.json
+# SessionStart: banner, plus a cost warning when resuming a session whose
+# prompt cache has expired (the first request re-sends the whole context).
+# Plain stdout here lands in Claude's context; keep it to a line or two.
 set -u
+
+input=$(cat)
 
 # === Banner ===
 cwd=$(pwd)
@@ -24,33 +27,30 @@ fi
 profile="${CLAUDE_PROFILE:-personal}"
 
 if [ -n "$branch" ]; then
-    printf '%s · %s%s · %s\n' "$cwd_display" "$branch" "$dirty" "$profile"
+    banner=$(printf '%s · %s%s · %s' "$cwd_display" "$branch" "$dirty" "$profile")
 else
-    printf '%s · %s\n' "$cwd_display" "$profile"
+    banner=$(printf '%s · %s' "$cwd_display" "$profile")
 fi
 
-# === Plan Mode Shared Context Guidance ===
-# stat -f (macOS) / stat -c (Linux), try both
-_stat_mtime() { stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null; }
-_plans_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plans"
-_latest_plan=""
-_latest_mtime=0
-for _plan in "$_plans_dir"/*.md; do
-    [ -e "$_plan" ] || continue
-    _m=$(_stat_mtime "$_plan") || continue
-    if [ "$_m" -gt "$_latest_mtime" ]; then
-        _latest_mtime="$_m"
-        _latest_plan="$_plan"
-    fi
-done
-if [ -n "$_latest_plan" ] && [ "$_latest_mtime" -gt "$(( $(date +%s) - 300 ))" ] 2>/dev/null; then
-    cat <<'EOF'
+# === Cold resume warning ===
+# The resume fields (Claude Code >= 2.1.251) appear only for resume/fork with
+# at least one prior response. A warning goes out as systemMessage so it
+# reaches the user, not just Claude's context.
+warning=""
+if command -v jq >/dev/null 2>&1; then
+    warning=$(printf '%s' "$input" | jq -r '
+        select(.prompt_cache_likely_expired == true and (.context_tokens // 0) >= 50000)
+        | "Cold resume: \(.context_tokens / 1000 | floor)k tokens to re-cache"
+          + (if .estimated_cache_write_usd then " (~$\(.estimated_cache_write_usd * 100 | round / 100))" else "" end)
+          + ", idle \(.seconds_since_last_response / 3600 * 10 | floor / 10)h. Consider /compact or a fresh session with a handoff."
+    ' 2>/dev/null || true)
+fi
 
-Plan Mode - Shared Context Strategy:
-   Before spawning parallel Explore agents:
-   1. Gather foundational context all agents need (repo structure, configs, git status, CLAUDE.md)
-   2. Pass this shared context in each agent's prompt
-   3. Assign each agent a specific exploration area to avoid overlap
-   Benefits: Fewer permission prompts, no duplicate reads, efficient exploration
-EOF
+if [ -n "$warning" ]; then
+    jq -n --arg banner "$banner" --arg warning "$warning" '{
+        systemMessage: $warning,
+        hookSpecificOutput: {hookEventName: "SessionStart", additionalContext: $banner}
+    }'
+else
+    printf '%s\n' "$banner"
 fi
