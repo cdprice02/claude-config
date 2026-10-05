@@ -72,12 +72,6 @@
       "Bash(expand *)",
       "Bash(file *)",
       "Bash(find *)",
-      "Bash(find * -exec cat *)",
-      "Bash(find * -exec file *)",
-      "Bash(find * -exec grep *)",
-      "Bash(find * -exec ls *)",
-      "Bash(find * -exec stat *)",
-      "Bash(find * -exec wc *)",
       "Bash(fold *)",
       "Bash(free -h*)",
       "Bash(free -m*)",
@@ -195,9 +189,6 @@
       "Bash(stat *)",
       "Bash(tac *)",
       "Bash(tail *)",
-      "Bash(timeout * cargo *)",
-      "Bash(timeout * pytest *)",
-      "Bash(timeout * python * *)",
       "Bash(touch /tmp/*)",
       "Bash(tr *)",
       "Bash(tree * | *)",
@@ -266,8 +257,6 @@
       "WebFetch(domain:scipy.org)",
       "WebFetch(domain:stackexchange.com)",
       "WebFetch(domain:wikipedia.org)",
-      "Write(/tmp/**)",
-      "Write(~/.claude/projects/*/memory/**)",
       "mcp__context7__*",
       "mcp__ide__*"
     ],
@@ -320,15 +309,17 @@
       "Read(./config/credentials.json)",
       "Read(./secrets/**)"
     ],
+    "defaultMode": "auto",
     "additionalDirectories": [
       "~/repos/obsidian",
       "~/.nix-atelier"
-    ],
-    "defaultMode": "default"
+    ]
   },
-  "model": "opusplan",
-  "fallbackModel": ["sonnet", "haiku"],
-  "autoCompactWindow": 500000,
+  "model": "opus",
+  "fallbackModel": [
+    "sonnet",
+    "haiku"
+  ],
   "hooks": {
     "PostToolUse": [
       {
@@ -385,10 +376,18 @@
     "skill-creator@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {},
+  "extraKnownMarketplaces": {
+    "bitwize-music": {
+      "source": {
+        "source": "github",
+        "repo": "bitwize-music-studio/claude-ai-music-skills"
+      }
+    }
+  },
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "autoCompactWindow": 500000,
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {
