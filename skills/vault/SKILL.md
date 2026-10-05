@@ -1,6 +1,6 @@
 ---
 name: vault
-description: Search, read, and capture notes in the Obsidian second-brain vault at $OBSIDIAN_VAULT. Use when the task needs prior context (a project, acronym, past decision, meeting, or person you don't recognize from the repo), or when something worth keeping was just discovered, such as a tool evaluation, a troubleshooting pattern, an architecture decision, or a project insight. Covers the PARA layout, frontmatter and tag conventions, note templates, the insight pipeline, and which paths are read-only.
+description: Search, read, and capture notes in the Obsidian second-brain vault at $OBSIDIAN_VAULT. Use when the task needs prior context (a project, acronym, past decision, meeting, or person you don't recognize from the repo), or when something worth keeping was just discovered, such as a tool evaluation, a troubleshooting pattern, an architecture decision, or a project insight. Covers the PARA layout, frontmatter and tag conventions, note templates, the insight pipeline, and the write scope.
 ---
 
 # Obsidian vault
@@ -135,13 +135,8 @@ essays, hobby guides, and one-off correspondence all migrate. Lack of
 future connection. The only real exclusions are genuinely unmigratable
 documents: content not owned by the user (a doc that lives in someone
 else's Google account, merely shared), or a format that would degrade as
-markdown (encoded/binary blobs, spreadsheets). Checked 2026-08-05: the Drive
-Google Docs corpus (42 files) was inventoried against this rule; 37 migrated
-into new `projects/personal/{project}/context/` folders (college-applications,
-career, speedcubing, early-programming, dnd-characters, correspondence,
-travel), 2 were dropped entirely at the user's request (encoded game-save
-blobs with no readable content), and 3 stayed in Drive as not owned by the
-user. Judge a new document against the rule above when it comes up.
+markdown (encoded/binary blobs, spreadsheets). Judge each new document
+against this rule.
 
 ## Capture workflow
 

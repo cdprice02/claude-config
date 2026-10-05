@@ -82,8 +82,6 @@ Skip it for self-contained work; a compile error or a local refactor doesn't
 need the vault.
 
 Read `$OBSIDIAN_VAULT/CLAUDE.md` for capture conventions before writing to it.
-Treat `templates/`, MOC files, and `Dashboard*.md` as read-only; they're
-hand-maintained navigation.
 
 ## Research order
 
