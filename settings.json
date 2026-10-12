@@ -251,7 +251,21 @@
       "WebFetch(domain:stackexchange.com)",
       "WebFetch(domain:wikipedia.org)",
       "mcp__context7__*",
-      "mcp__ide__*"
+      "mcp__ide__*",
+      "mcp__claude_ai_vault__vault_read",
+      "mcp__claude_ai_vault__vault_batch_read",
+      "mcp__claude_ai_vault__vault_list",
+      "mcp__claude_ai_vault__vault_search",
+      "mcp__claude_ai_vault__vault_search_frontmatter",
+      "mcp__claude_ai_vault__vault_canvas_read",
+      "mcp__claude_ai_vault__vault_daily_note_path",
+      "mcp__claude_ai_vault__vault_daily_note_read",
+      "mcp__claude_ai_vault__vault_analytics_summary",
+      "mcp__claude_ai_vault__vault_analytics_findings",
+      "mcp__claude_ai_vault__vault_append",
+      "mcp__claude_ai_vault__vault_daily_note_append",
+      "mcp__claude_ai_vault-search__*",
+      "mcp__claude_ai_vault_search__*"
     ],
     "deny": [
       "Bash(dd if=/dev/random of=/dev/*)",
@@ -300,7 +314,16 @@
       "Read(./.env.*)",
       "Read(.envrc)",
       "Read(./config/credentials.json)",
-      "Read(./secrets/**)"
+      "Read(./secrets/**)",
+      "mcp__claude_ai_vault__vault_write",
+      "mcp__claude_ai_vault__vault_write_binary",
+      "mcp__claude_ai_vault__vault_edit",
+      "mcp__claude_ai_vault__vault_batch_frontmatter_update",
+      "mcp__claude_ai_vault__vault_request_upload_url",
+      "mcp__claude_ai_vault__vault_move",
+      "mcp__claude_ai_vault__vault_delete",
+      "mcp__claude_ai_vault__vault_canvas_add_node",
+      "mcp__claude_ai_vault__vault_canvas_add_edge"
     ],
     "defaultMode": "auto",
     "additionalDirectories": [

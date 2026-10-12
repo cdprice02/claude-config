@@ -47,6 +47,13 @@ rg -l "^type: knowledge" "$OBSIDIAN_VAULT/knowledge"        # by frontmatter
 rg -o 'tags:.*topic/[a-z-]+' "$OBSIDIAN_VAULT" -r '$0'      # by tag
 ```
 
+When the words are unknown (a topic, not a term), or the answer may be in
+Google Drive (papers, records, lecture notes), use the `vault-search`
+connector if it is loaded: `semantic_search` finds notes and Drive pages by
+meaning, `related_notes` suggests links for a note, and `get_page` shows a
+Drive page. Its paths are relative to `$OBSIDIAN_VAULT` for notes. It needs
+the home PC on; when it says so, fall back to `rg`.
+
 Then navigate: `Home.md` → MOC → note. Or follow `## Related Knowledge` sections
 in adjacent notes. Prefer appending to an existing note over creating a near-duplicate.
 
