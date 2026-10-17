@@ -7,7 +7,6 @@
 !.markdownlint.yaml
 !.pre-commit-config.yaml
 !CLAUDE.md
-!PROJECT_TEMPLATE.md
 !README.md
 !settings.json
 

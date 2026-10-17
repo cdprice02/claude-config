@@ -38,7 +38,7 @@ case "$PROFILE:$BRANCH" in
     work:main)
         warn "CLAUDE_PROFILE=work but claude-config is on 'main' (the PUBLIC branch)."
         note "This session is using PERSONAL settings on a work machine."
-        note "Fix: git -C $CFG_DIR checkout work   (see user.nix submodules)"
+        note "Fix: git -C $CFG_DIR checkout work   (see atelier.submodules in nix-atelier)"
         ;;
     personal:work)
         warn "CLAUDE_PROFILE=personal but claude-config is on the 'work' branch."
