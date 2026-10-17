@@ -49,8 +49,8 @@ rg -o 'tags:.*topic/[a-z-]+' "$OBSIDIAN_VAULT" -r '$0'      # by tag
 
 When the words are unknown (a topic, not a term), or the answer may be in
 Google Drive (papers, records, lecture notes), use the `hive`
-connector if it is loaded: `semantic_search` finds notes and Drive pages by
-meaning, `related_notes` suggests links for a note, and `get_page` shows a
+connector if it is loaded: `forager_semantic_search` finds notes and Drive pages by
+meaning, `forager_related_notes` suggests links for a note, and `forager_get_page` shows a
 Drive page. Its paths are relative to `$OBSIDIAN_VAULT` for notes. It needs
 the home PC on; when it says so, fall back to `rg`.
 
@@ -185,20 +185,18 @@ content, edit only when a task specifically calls for it.
 
 ## Filesystem vs. the remote connector
 
-Claude Code reaches the vault via the filesystem, not the remote `vault` MCP
+Claude Code reaches the vault via the filesystem, not the `hive` MCP
 connector: zero tool-schema cost, and it's what everything above assumes.
 Desktop, mobile, and claude.ai web have no filesystem, so they use the
-connector instead; it reaches the same vault, but through a narrower,
-audit-logged surface.
+`hive` connector's `forager_*` tools instead: read, batch read, list, keyword
+and frontmatter search, today's daily note; write (refuses to replace a note
+without `overwrite=true`), edit, append, daily-note append, move (repoints
+wikilinks), delete (to `.trash/`). Every write is audit-logged on the server.
+The same conventions apply there: search first, use the templates, write the
+frontmatter.
 
-The connector has capabilities the filesystem doesn't: Excalidraw canvas
-editing, batch frontmatter updates across many files in one call,
-frontmatter-indexed search, the built-in vault-analytics checks (broken
-wikilinks, missing frontmatter, suspicious tag variants), daily-note path
-resolution against the vault's own naming convention, and binary
-(image/PDF) writes. If a task genuinely needs one of those from Claude Code,
-rare since `git`/`rg`/cross-repo work only exist on the filesystem side,
-reach for the connector rather than reimplementing it by hand.
+From Claude Code, the connector is only for `forager_semantic_search`,
+`forager_related_notes` and `forager_get_page`, which the filesystem has no equivalent for.
 
 ## Sync
 
