@@ -2,14 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 90,
   "env": {
-    "OBSIDIAN_VAULT": "$HOME/repos/obsidian",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "attribution": {
     "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
     "pr": "Co-Authored-By: Claude <noreply@anthropic.com>"
   },
-  "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [
       "Bash(* --help *)",
@@ -49,10 +47,6 @@
       "Bash(claude plugin validate *)",
       "Bash(column *)",
       "Bash(comm *)",
-      "Bash(conda env list)",
-      "Bash(conda info*)",
-      "Bash(conda list* | *)",
-      "Bash(conda list*)",
       "Bash(cut *)",
       "Bash(date *)",
       "Bash(df * | *)",
@@ -66,7 +60,6 @@
       "Bash(du * | *)",
       "Bash(du -h --max-depth=*)",
       "Bash(du -sh *)",
-      "Bash(dvc *)",
       "Bash(echo *)",
       "Bash(env | *)",
       "Bash(expand *)",
@@ -202,8 +195,8 @@
       "Bash(uv sync*)",
       "Bash(uv tree*)",
       "Bash(uv venv *)",
-      "Bash(wait)",
       "Bash(wait *)",
+      "Bash(wait)",
       "Bash(wc *)",
       "Bash(whereis *)",
       "Bash(which *)",
@@ -240,7 +233,6 @@
       "WebFetch(domain:en.wikipedia.org)",
       "WebFetch(domain:gist.github.com)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:julialang.org)",
       "WebFetch(domain:man7.org)",
       "WebFetch(domain:nixos.org)",
       "WebFetch(domain:numpy.org)",
@@ -250,9 +242,9 @@
       "WebFetch(domain:scipy.org)",
       "WebFetch(domain:stackexchange.com)",
       "WebFetch(domain:wikipedia.org)",
-      "mcp__context7__*",
-      "mcp__ide__*",
-      "mcp__claude_ai_hive__*"
+      "mcp__claude_ai_Context7__*",
+      "mcp__claude_ai_hive__*",
+      "mcp__ide__*"
     ],
     "deny": [
       "Bash(dd if=/dev/random of=/dev/*)",
@@ -327,6 +319,10 @@
             "type": "command",
             "command": "bash ~/.claude/scripts/format-on-edit.sh",
             "statusMessage": "Formatting..."
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/no-em-dash.sh"
           }
         ]
       }
@@ -349,6 +345,26 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/commit-msg-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/voice-reminder.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -356,7 +372,6 @@
     "command": "bash ~/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -412,5 +427,31 @@
       "**Org-specific CLIs**: None configured"
     ]
   },
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "skillOverrides": {
+    "implement": "user-invocable-only",
+    "grill-with-docs": "user-invocable-only",
+    "grill-me": "user-invocable-only",
+    "wayfinder": "user-invocable-only",
+    "improve-codebase-architecture": "user-invocable-only",
+    "prototype": "user-invocable-only",
+    "research": "user-invocable-only",
+    "to-spec": "user-invocable-only",
+    "to-tickets": "user-invocable-only",
+    "triage": "user-invocable-only",
+    "implement-spec": "user-invocable-only",
+    "ask-matt": "off",
+    "wizard": "off",
+    "teach": "off",
+    "to-questionnaire": "off",
+    "wait-what": "off",
+    "retro": "off",
+    "handoff": "off",
+    "setup-matt-pocock-skills": "off",
+    "anthropic-skills:docx": "off",
+    "anthropic-skills:pptx": "off",
+    "anthropic-skills:xlsx": "off",
+    "anthropic-skills:computer-use": "off",
+    "anthropic-skills:morning": "user-invocable-only"
+  }
 }
