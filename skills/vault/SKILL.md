@@ -48,7 +48,7 @@ rg -o 'tags:.*topic/[a-z-]+' "$OBSIDIAN_VAULT" -r '$0'      # by tag
 ```
 
 When the words are unknown (a topic, not a term), or the answer may be in
-Google Drive (papers, records, lecture notes), use the `vault-search`
+Google Drive (papers, records, lecture notes), use the `hive`
 connector if it is loaded: `semantic_search` finds notes and Drive pages by
 meaning, `related_notes` suggests links for a note, and `get_page` shows a
 Drive page. Its paths are relative to `$OBSIDIAN_VAULT` for notes. It needs

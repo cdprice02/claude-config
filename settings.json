@@ -264,8 +264,7 @@
       "mcp__claude_ai_vault__vault_analytics_findings",
       "mcp__claude_ai_vault__vault_append",
       "mcp__claude_ai_vault__vault_daily_note_append",
-      "mcp__claude_ai_vault-search__*",
-      "mcp__claude_ai_vault_search__*"
+      "mcp__claude_ai_hive__*"
     ],
     "deny": [
       "Bash(dd if=/dev/random of=/dev/*)",
