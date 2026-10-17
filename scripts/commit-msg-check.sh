@@ -17,29 +17,36 @@ printf '%s' "$cmd" | python3 -I -c '
 import re, shlex, sys
 
 cmd = sys.stdin.read()
-try:
-    tokens = shlex.split(cmd, posix=True)
-except ValueError:
-    sys.exit(0)
+messages = []
 
-parts = []
-for flag, value in zip(tokens, tokens[1:]):
-    if flag in ("-m", "--message"):
-        # Unwrap the $(cat <<EOF ... EOF) heredoc form.
-        m = re.match(r"^\$\(cat <<-?\x27?(\w+)\x27?\n(.*?)\n\s*\1\s*\)$", value, re.S)
-        parts.append(m.group(2) if m else value)
-if not parts:
-    sys.exit(0)
+# git commit -F - <<EOF ... EOF, possibly several in one command.
+for m in re.finditer(r"git commit[^\n]*?(?:-F|--file)[ =]?-[^\n]*<<-?\s*\x27?(\w+)\x27?\n(.*?)\n\1$", cmd, re.S | re.M):
+    messages.append(m.group(2))
 
-lines = "\n\n".join(parts).strip().splitlines()
+if not messages:
+    try:
+        tokens = shlex.split(cmd, posix=True)
+    except ValueError:
+        sys.exit(0)
+    parts = []
+    for flag, value in zip(tokens, tokens[1:]):
+        if flag in ("-m", "--message"):
+            # Unwrap the $(cat <<EOF ... EOF) heredoc form.
+            m = re.match(r"^\$\(cat <<-?\x27?(\w+)\x27?\n(.*?)\n\s*\1\s*\)$", value, re.S)
+            parts.append(m.group(2) if m else value)
+    if parts:
+        messages.append("\n\n".join(parts))
+
 problems = []
-if "—" in cmd:
+if messages and "—" in cmd:
     problems.append("contains an em-dash")
-if len(lines[0]) > 72:
-    problems.append(f"subject is {len(lines[0])} chars (max 72)")
-body = [l for l in lines[1:] if l.strip() and not re.match(r"^[\w-]+: .+<.+@.+>$", l)]
-if len(body) > 3:
-    problems.append(f"body is {len(body)} lines (max 3; detail belongs in the PR body)")
+for msg in messages:
+    lines = msg.strip().splitlines() or [""]
+    if len(lines[0]) > 72:
+        problems.append(f"subject is {len(lines[0])} chars (max 72)")
+    body = [l for l in lines[1:] if l.strip() and not re.match(r"^[\w-]+: .+<.+@.+>$", l)]
+    if len(body) > 3:
+        problems.append(f"body is {len(body)} lines (max 3; detail belongs in the PR body)")
 if problems:
     print("Commit message " + "; ".join(problems) + ". See the commit skill.", file=sys.stderr)
     sys.exit(2)
